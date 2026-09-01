@@ -154,7 +154,7 @@ Full queries: [`sql/kpi_queries.sql`](sql/kpi_queries.sql)
 
 Three pages, dark theme, every visual answers a decision — not decoration. Built after two rounds of validation: category-mix confound removed from the seller analysis, median (not mean) used for buffer calibration to avoid outlier distortion.
 
-File: [`dashboard/olist_delivery_analytics.pbix`](dashboard/olist_delivery_analytics.pbix)
+File: [`dashboard/olist_project.pbix`](dashboard/olist_project.pbix)
 
 <details open>
 <summary><b>Page 1 — Executive Overview</b></summary>
