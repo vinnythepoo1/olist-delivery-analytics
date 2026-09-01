@@ -4,8 +4,7 @@
 *.env
 
 # ===== Raw & Processed Data (large files, not for version control) =====
-data/**/*.csv
-data/**/*.json
+
 !data/.gitkeep
 
 # ===== Jupyter Notebook =====
