@@ -1,165 +1,281 @@
-<p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:0d1117,50:1a1a2e,100:16213e&height=180&section=header&text=Olist%20E-Commerce%20Analysis&fontSize=36&fontColor=ffffff&fontAlignY=40&desc=Late%20Delivery%20Prediction%20%7C%20Python%20%7C%20Power%20BI&descAlignY=60&descSize=15&animation=fadeIn" />
-</p>
+<div align="center">
 
-<p align="center">
-  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=16&duration=3000&pause=1000&color=36BCF7&center=true&vCenter=true&width=650&lines=9+relational+tables+merged+into+one+pipeline;96%2C454+delivered+orders+analyzed;Data+leakage+detected+and+removed;Late+delivery+drops+review+score+from+4.30+to+2.62;Northeast+Brazil+has+the+highest+late+rate+at+24%25" />
-</p>
+<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=28&pause=1000&color=C73E1D&center=true&vCenter=true&width=650&lines=Olist+Delivery+Analytics;95%2C104+Orders+%C2%B7+8.19%25+Late;SQL+%2B+Python+%2B+Power+BI+%2B+ML;Where+Late+Delivery+Actually+Costs+Money" alt="Typing SVG" />
 
-<p align="center">
-  <img src="https://img.shields.io/badge/PYTHON-ffffff?style=flat-square&logo=python&logoColor=000000" />
-  <img src="https://img.shields.io/badge/PANDAS-ffffff?style=flat-square&logo=pandas&logoColor=000000" />
-  <img src="https://img.shields.io/badge/SCIKIT--LEARN-ffffff?style=flat-square&logo=scikit-learn&logoColor=000000" />
-  <img src="https://img.shields.io/badge/PLOTLY-ffffff?style=flat-square&logo=plotly&logoColor=000000" />
-  <img src="https://img.shields.io/badge/POWER_BI-ffffff?style=flat-square&logo=powerbi&logoColor=000000" />
-  <img src="https://img.shields.io/badge/JUPYTER-ffffff?style=flat-square&logo=jupyter&logoColor=000000" />
-  <a href="https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce">
-    <img src="https://img.shields.io/badge/DATASET-ffffff?style=flat-square&logo=kaggle&logoColor=000000" />
-  </a>
-</p>
+<br/>
 
----
+![Python](https://img.shields.io/badge/Python-3.12-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-18-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)
+![Power BI](https://img.shields.io/badge/Power_BI-Dashboard-F2C811?style=for-the-badge&logo=powerbi&logoColor=black)
+![pandas](https://img.shields.io/badge/pandas-Data_Wrangling-150458?style=for-the-badge&logo=pandas&logoColor=white)
+![scikit--learn](https://img.shields.io/badge/scikit--learn-ML-F7931E?style=for-the-badge&logo=scikitlearn&logoColor=white)
 
-## Overview
+![Status](https://img.shields.io/badge/status-complete-2EA043?style=flat-square)
+![Last Commit](https://img.shields.io/badge/maintained-2026-blue?style=flat-square)
+![License](https://img.shields.io/badge/license-MIT-lightgrey?style=flat-square)
 
-This project analyzes the [Olist Brazilian E-Commerce dataset](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce) — a real-world relational database of **9 tables** covering orders, customers, products, sellers, payments, and reviews from 2016–2018.
+</div>
 
-The core challenge of this project is not just the machine learning — it is the **data engineering layer**: joining 9 relational tables correctly into a single order-level dataset before any analysis can begin. Decisions like aggregating before joining, deduplicating reviews, and defining the right unit of analysis are what make this project meaningful.
+<br/>
 
-**Business Question**
-> Among orders that were delivered, what factors predict whether an order will arrive after its estimated delivery date?
+## The Question
 
-**ML Target:** `is_late` — 1 if `order_delivered_customer_date > order_estimated_delivery_date`, else 0
+> **Revenue is growing — but 8.19% of orders arrive late and only 2.98% of customers ever come back. Where does that problem actually live, what does it cost, and can we predict who it hurts next?**
 
----
+This project is an end-to-end analysis of the [Olist Brazilian E-Commerce](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce) dataset — 9 raw tables joined, cleaned, and pushed through a full **SQL → Python EDA → Power BI → Machine Learning** pipeline to answer that one question with real numbers, not guesses.
 
-## Key Numbers
+<br/>
 
-| | |
-|---|---|
-| Total Delivered Orders | 96,454 |
-| Late Delivery Rate | 8.11% |
-| Model | Random Forest Classifier |
-| F1-Score (Late Class) | 0.33 |
-| Top Predictor | Shipping time from seller to carrier |
+## Table of Contents
 
----
+- [The Question](#the-question)
+- [Tech Stack](#tech-stack)
+- [Pipeline Overview](#pipeline-overview)
+- [Data Cleaning](#data-cleaning--what-got-fixed)
+- [EDA — Four Business Questions](#eda--four-business-questions)
+- [SQL KPIs](#sql-business-kpis)
+- [Power BI Dashboard](#power-bi-dashboard)
+- [Machine Learning](#machine-learning-predicting-bad-review-risk)
+- [Key Takeaways](#key-business-takeaways)
+- [Repo Structure](#repo-structure)
+- [How to Reproduce](#how-to-reproduce)
 
-## Where Deliveries Fail
+<br/>
 
-### By Region
+## Tech Stack
 
-![Late Rate by State](images/eda/late_rate_by_customer_state.png)
+<div align="center">
 
-Northeast Brazil dominates the late delivery ranking — Alagoas (24%), Maranhao (20%), Piaui (16%). These states sit far from Sao Paulo, where the majority of Olist sellers are based. The further the customer is from the seller hub, the harder it is to meet the estimated delivery window. This is a structural logistics problem, not a seller behavior problem.
+| Layer | Tools |
+|:--|:--|
+| **Data Cleaning & EDA** | Python, pandas, seaborn, matplotlib |
+| **Database** | PostgreSQL 18 + pgAdmin 4, SQLAlchemy |
+| **Machine Learning** | scikit-learn (RandomForestClassifier) |
+| **Dashboard** | Power BI Desktop (3-page, dark theme) |
+| **Geolocation** | Olist geolocation dataset, joined by ZIP prefix |
 
-### Over Time
+</div>
 
-![Late Rate Over Time](images/eda/late_rate_over_time.png)
+<br/>
 
-The late delivery rate was relatively stable through 2017 before spiking sharply to **21.4% in March 2018** — nearly triple the average. This coincides with Brazil's Carnival season (February/March), when logistics networks are strained by reduced workforce and surge in consumer demand. The spike confirms that seasonal capacity planning is a critical gap in Olist's delivery operations.
+## Pipeline Overview
 
-### By Product Category
-
-![Top 15 Categories](images/eda/top_15_categories_late_rate.png)
-
-Home comfort, furniture, and audio equipment have the highest late rates. These are bulky, heavy items that require special handling and longer transit times. The pattern confirms that product weight and dimensions are meaningful predictors of delivery delays.
-
----
-
-## Impact on Customer Satisfaction
-
-Late delivery is not just an operational problem — it directly damages how customers feel about their experience. Orders that arrived late received an average review score of **2.62 out of 5**, compared to **4.30** for on-time orders. That is a drop of nearly 40% in satisfaction. For a marketplace like Olist, where seller reputation drives repeat purchases, late delivery is a revenue risk, not just a logistics inconvenience.
-
----
-
-## Machine Learning
-
-**Model:** Random Forest Classifier with `class_weight='balanced'` to handle the 8.1% minority class (late orders).
-
-**Evaluation:** Precision, Recall, F1-Score — not accuracy, which would be misleading on an imbalanced dataset.
-
-| Class | Precision | Recall | F1-Score |
-|---|---|---|---|
-| On Time (0) | 0.93 | 0.98 | 0.96 |
-| Late (1) | 0.56 | 0.23 | 0.33 |
-
-**Data Leakage Caught**
-
-During feature selection, `review_score` appeared as the most important feature by a large margin. However, customers only leave reviews after delivery — meaning this column is a consequence of lateness, not a cause. Using it would allow the model to "cheat" by reading the outcome. Removing it dropped the late-class F1 from 0.52 to 0.33 — a lower score, but an honest one.
-
-### Feature Importance (Clean Model)
-
-![Feature Importance Clean](images/ml/feature_importance_clean.png)
-
-All top 3 features are time-based: **shipping time** (how fast the seller hands off to the carrier), **estimated delivery days** (how optimistic the delivery window was set), and **purchase month** (seasonal effects). This tells a clear business story — late delivery is primarily a logistics speed problem. Olist should focus on reducing seller processing time and improving delivery estimate accuracy, especially during peak seasons.
-
----
-
-## Analysis Pipeline
-
-```
-Load 9 relational CSVs
-        |
-Filter to delivered orders only — create is_late target
-        |
-Aggregate order_items and order_payments to order level
-        |
-Deduplicate order_reviews — keep most recent per order
-        |
-Join all 9 tables — maintain 96,478 rows throughout
-        |
-Clean nulls — fill or drop, zero nulls remaining
-        |
-Feature engineering — extract time-based features from timestamps
-        |
-Train Random Forest — remove data leakage — evaluate with F1
-        |
-Export to Power BI — build 2-page interactive dashboard
+```mermaid
+flowchart LR
+    A[9 Raw CSVs] --> B[pandas Join Pipeline]
+    B --> C[Cleaning<br/>nulls, negative shipping_time]
+    C --> D[olist_final.csv<br/>95,104 rows]
+    D --> E[PostgreSQL]
+    D --> F[Python EDA]
+    D --> G[ML Model]
+    E --> H[8 SQL KPIs]
+    F --> I[Power BI Dashboard]
+    H --> I
+    G -.honest, weak-but-real signal.-> I
 ```
 
----
+**Raw inputs:** customers, orders, order items, payments, reviews, products, sellers, category translation, **geolocation** (9 tables total — geolocation was added specifically to enable map visuals and future distance-based features).
 
-## Join Design Decisions
+<br/>
 
-| Decision | Reason |
-|---|---|
-| Aggregate `order_items` before joining | One order can have multiple items — naive join inflates row count |
-| Aggregate `order_payments` before joining | One order can have split payments across methods |
-| Deduplicate `order_reviews` by most recent | Some orders had multiple reviews — keep latest |
-| Filter to `delivered` status only | Cancelled orders are a separate prediction problem |
-| Remove `review_score` from features | Data leakage — only available after delivery occurs |
+## Data Cleaning — What Got Fixed
 
----
+Real data is never clean on the first pass. Here's what was actually caught and corrected, not just assumed:
 
-## Project Structure
+- **1,350 orders (1.40%)** had a logically impossible **negative `shipping_time`** (carrier pickup logged *before* approval) — removed.
+- Missing product dimensions filled with category median; missing `review_score` marked distinctly (not imputed as a guess).
+- Missing geolocation coordinates for ~480 orders backfilled with **state-level average** coordinates rather than dropped.
+- Zero duplicate rows, zero remaining nulls, confirmed via automated validation checks — not just eyeballed.
+
+<br/>
+
+## EDA — Four Business Questions
+
+Every chart here answers a real decision, not just "here's a distribution." Common-sense findings (e.g. *"late delivery lowers review scores"*) were deliberately cut in favor of questions with a genuine **"I didn't expect that"** answer.
+
+<details open>
+<summary><b>1. Where does late delivery actually cost the most money?</b></summary>
+<br/>
+
+<img src="notebooks/images/eda-revenue-at-risk.png" width="700"/>
+
+**R$1,154,385 (8.85%) of total revenue** sits in orders that arrived late. `health_beauty` alone accounts for R$111,661 of that — the number to weigh against the cost of fixing fulfillment in that category, not just a late-rate percentage.
+</details>
+
+<details>
+<summary><b>2. Which states have the worst delivery reliability?</b></summary>
+<br/>
+
+<img src="notebooks/images/eda-late-rate-by-state.png" width="700"/>
+
+Worst states (AL 23.7%, MA 20.0%, PI 16.2%) are all **small revenue contributors** — the delivery problem is concentrated in the smallest markets, not the biggest one (SP, 38% of revenue, sits near the bottom at 5.95%). That changes the cost/benefit of fixing it entirely.
+</details>
+
+<details>
+<summary><b>3. Are we giving enough delivery time, or is fulfillment itself the problem?</b></summary>
+<br/>
+
+<img src="notebooks/images/eda-buffer-calibration.png" width="700"/>
+
+These 13 categories already get an **above-average delivery window** and are still late more often than average. Giving them even more time wouldn't fix it — the problem is fulfillment speed, not the estimate.
+</details>
+
+<details>
+<summary><b>4. Where in the pipeline does the delay actually accumulate?</b></summary>
+<br/>
+
+<img src="notebooks/images/eda-dispatch-time.png" width="500"/>
+
+Late orders spend a median of **~30 more hours** in the warehouse before carrier pickup than on-time orders — while the payment/approval side shows almost no difference (5 minutes). The delay is on the fulfillment side, not the customer or payment side.
+</details>
+
+<br/>
+
+## SQL Business KPIs
+
+Eight queries, each answering a distinct business question — mixing plain `GROUP BY` where that's enough and window functions (`LAG`, `RANK`, `SUM() OVER()`) only where the question genuinely needs one (month-over-month growth, revenue share, category ranking).
+
+Full queries: [`sql/kpi_queries.sql`](sql/kpi_queries.sql)
+
+| # | KPI | Headline Number |
+|:-:|:--|:--|
+| 1 | Overall late rate | **8.19%** of 95,104 orders |
+| 2 | Monthly revenue trend | Nov 2017 Black Friday spike, 14.31% late rate that month |
+| 3 | Top categories by revenue | `health_beauty` #1 |
+| 4 | Market size by state | SP = **38.31%** of total revenue |
+| 5 | Regional delivery performance | Worst states are small markets, not SP |
+| 6 | Review score cost of lateness | **4.30 stars → 2.61 stars** (late orders) |
+| 7 | Revenue by payment type | `boleto` = highest late rate (8.99%) |
+| 8 | Repeat vs. one-time buyers | Only **2.98%** of customers are repeat |
+
+<br/>
+
+## Power BI Dashboard
+
+Three pages, dark theme, every visual answers a decision — not decoration. Built after two rounds of validation: category-mix confound removed from the seller analysis, median (not mean) used for buffer calibration to avoid outlier distortion.
+
+File: [`dashboard/olist_delivery_analytics.pbix`](dashboard/olist_delivery_analytics.pbix)
+
+<details open>
+<summary><b>Page 1 — Executive Overview</b></summary>
+<br/>
+<img src="dashboard/images/dashboard-page1-overview.png" width="800"/>
+</details>
+
+<details>
+<summary><b>Page 2 — Delivery Performance</b></summary>
+<br/>
+<img src="dashboard/images/dashboard-page2-delivery-performance.png" width="800"/>
+</details>
+
+<details>
+<summary><b>Page 3 — Revenue & Late Orders</b></summary>
+<br/>
+<img src="dashboard/images/dashboard-page3-revenue.png" width="800"/>
+</details>
+
+<br/>
+
+## Machine Learning: Predicting Bad-Review Risk
+
+> A smaller, honestly-reported piece of this project — included because interpreting a *moderate* result correctly is a more valuable skill signal than only showing polished ones.
+
+**The question:** can we flag an order as likely to get a bad review (1-3 stars) right after it ships — before the customer actually writes one — so customer service can reach out proactively?
+
+- **Model:** `RandomForestClassifier(class_weight='balanced', random_state=42)`
+- **Target:** `bad_review` (review_score <= 3)
+- **Result: ROC AUC 0.694** — a real but moderate signal (not a crystal ball, useful for triage)
+- **Top features:** `shipping_time`, `is_late`, `estimated_delivery_days`, `approval_time` — all delivery-related, none product-related
+
+**Two deliberate modeling decisions worth calling out:**
+1. **Leakage rules flip depending on prediction timing.** For a late-delivery predictor, `review_score` and `shipping_time` would be leakage (not known at order time). For *this* model, they're legitimate — the prediction happens *after* delivery, so the delivery outcome is fair game.
+2. **Raw lat/lng coordinates were tested and removed** after they inflated feature importance without improving ROC AUC (0.61 to 0.62 after removal) — a real example of catching a model overfitting to memorized geography rather than a generalizable pattern.
+
+Full notebook: [`notebooks/02_ml.ipynb`](notebooks/02_ml.ipynb)
+
+<br/>
+
+## Key Business Takeaways
 
 ```
-olist-ecommerce-analysis/
-|
-|-- data/
-|   |-- raw/                    9 original CSV files from Kaggle
-|   |-- processed/
-|       |-- olist_final.csv     Merged and cleaned (96,454 rows x 36 cols)
-|
-|-- notebooks/
-|   |-- olist_ecommerce_analysis.ipynb
-|
-|-- dashboard/
-|   |-- Olist_E-Commerce_project.pbix
-|
-|-- images/
-|   |-- eda/
-|   |-- ml/
-|   |-- dashboard/
-|
-|-- README.md
+1. 8.19% of orders arrive late — R$1.15M in revenue sits inside them.
+2. The problem is concentrated: specific states, specific sellers,
+   specific categories — not spread evenly.
+3. Some categories already get generous delivery windows and are
+   STILL late — the fix is fulfillment speed, not longer estimates.
+4. A handful of specific sellers run 20-30 points above what's normal
+   for what they sell — a seller scorecard would catch this where a
+   state-level fix can't.
+5. Late delivery costs about 1.7 stars in review score — and can be
+   predicted (moderately) right after shipment, enabling proactive
+   customer service outreach.
 ```
 
----
+<br/>
 
-[Dataset — Olist Brazilian E-Commerce on Kaggle](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce)
+## Repo Structure
 
-<p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:16213e,50:1a1a2e,100:0d1117&height=120&section=footer&animation=fadeIn" />
-</p>
+```
+olist-delivery-analytics/
+├── README.md
+├── .gitignore
+├── data/                              (gitignored — add your own CSVs here)
+│   └── .gitkeep
+├── sql/
+│   └── kpi_queries.sql
+├── dashboard/
+│   ├── olist_delivery_analytics.pbix
+│   └── images/
+│       ├── dashboard-page1-overview.png
+│       ├── dashboard-page2-delivery-performance.png
+│       └── dashboard-page3-revenue.png
+└── notebooks/
+    ├── 01_data_cleaning_and_eda.ipynb
+    ├── 02_ml.ipynb
+    └── images/
+        ├── eda-late-rate-by-state.png
+        ├── eda-buffer-calibration.png
+        ├── eda-dispatch-time.png
+        ├── eda-revenue-at-risk.png
+        └── ml-feature-importance.png
+```
+
+<br/>
+
+## How to Reproduce
+
+```bash
+# 1. Clone
+git clone https://github.com/vinnythepoo1/olist-delivery-analytics.git
+cd olist-delivery-analytics
+
+# 2. Set up environment
+pip install pandas seaborn matplotlib scikit-learn sqlalchemy python-dotenv --break-system-packages
+
+# 3. Add the raw Olist CSVs to data/ (download from Kaggle - see link above)
+#    Add your own .env in the project root (never commit this):
+echo "DB_USER=postgres
+DB_PASSWORD=your_password
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=olist_db" > .env
+
+# 4. Run the notebooks in order
+# notebooks/01_data_cleaning_and_eda.ipynb  -> builds data/olist_final.csv
+# notebooks/02_ml.ipynb                     -> trains the bad-review-risk model
+
+# 5. Load sql/kpi_queries.sql in pgAdmin against the resulting table
+
+# 6. Open dashboard/olist_delivery_analytics.pbix in Power BI Desktop
+```
+
+<br/>
+
+<div align="center">
+
+**Dataset:** [Olist Brazilian E-Commerce](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce) via Kaggle
+Built with pandas, PostgreSQL, scikit-learn, and Power BI
+
+<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=400&size=14&pause=1500&color=8FA6B2&center=true&vCenter=true&width=500&lines=Thanks+for+reading+-+questions+welcome!" alt="footer" />
+
+</div>
